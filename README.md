@@ -1,11 +1,11 @@
-
-##The aim of this project was to use certain technologies correctly and to learn them effectively.
-#Kotlin
-#MVVM
-#Viewmodel
-#Livedata
-#Coroutines
-#Retrofit
+### Movie App
+## The aim of this project was to use certain technologies correctly and to learn them effectively.
+# Kotlin
+# MVVM
+# Viewmodel
+# Livedata
+# Coroutines
+# Retrofit
 
 ![image](https://github.com/bulent017/MVVM-Movie-App/assets/96498139/a8fbf135-be3d-4236-991f-40ee47cd9e9f)
 
