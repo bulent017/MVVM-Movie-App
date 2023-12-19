@@ -1,32 +1,28 @@
-package com.bulentoral.movieapp.ui.home
+package com.bulentoral.movieapp.ui.detail
 
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bulentoral.movieapp.model.MovieItem
+import com.bulentoral.movieapp.model.MovieDetalResponse
 import com.bulentoral.movieapp.network.ApiClient
 import com.bulentoral.movieapp.util.Constant
 import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
-
-    val movieList : MutableLiveData<List<MovieItem?>?> = MutableLiveData()
+class DetailViewModel : ViewModel() {
+    val movieDetail : MutableLiveData<MovieDetalResponse> = MutableLiveData()
     val isLoading = MutableLiveData(false)
     val errorMessage : MutableLiveData<String?> = MutableLiveData()
 
-    init {
-        getMovieList() // HomeviewModel bir kere oluşunca istek atıyoz
 
-    }
-
-    fun getMovieList(){
+    fun getMovieDetail(movieID: Int){
         isLoading.value = true // senkron
 
         viewModelScope.launch {
             try {
-                val response = ApiClient.getClient().getMovieList(token = Constant.BEARER_TOKEN)
+                val response = ApiClient.getClient().getMovieDetail(movieID = movieID.toString() ,token = Constant.BEARER_TOKEN)
                 if (response.isSuccessful){
-                    movieList.postValue(response.body()?.movieItems) //Asenkron postvalue()
+                    movieDetail.postValue(response.body()) //Asenkron postvalue()
                 }
                 else {
                     if (response.message().isNullOrEmpty()){

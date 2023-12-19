@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bulentoral.movieapp.R
 import com.bulentoral.movieapp.databinding.FragmentHomeBinding
 
@@ -14,6 +15,7 @@ import com.bulentoral.movieapp.databinding.FragmentHomeBinding
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
+    private lateinit var movieAdapter: MovieAdapter
     private val binding get() = _binding!!
     private val viewModel by viewModels<HomeViewModel>()
     override fun onCreateView(
@@ -23,7 +25,6 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
 
-        viewModel.getMovieList()
         observerEvents()
 
         return binding.root
@@ -40,9 +41,24 @@ class HomeFragment : Fragment() {
 
         }
         viewModel.movieList.observe(viewLifecycleOwner){list ->
-            print(list)
+            if (list.isNullOrEmpty()){
+                binding.textViewHomeError.text = "There is any movie"
+                binding.textViewHomeError.isVisible = true
+            }
+            else{
+                movieAdapter = MovieAdapter(list,object : MovieClickListener{
+                    override fun onMovieClicked(movieID: Int?) {
+                        movieID?.let {it
+                            val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(it)
+                            findNavController().navigate(action)
+                        }
 
-        }
+                    }
+                })
+                binding.reycyclerViewHome.adapter = movieAdapter
+            }
+
+                }
 
     }
 
